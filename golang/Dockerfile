@@ -24,8 +24,8 @@ RUN make prefix=/usr/local all
 RUN make prefix=/usr/local install
 
 # install golang compiler
-RUN wget https://storage.googleapis.com/golang/go1.5.1.linux-amd64.tar.gz
-RUN tar -C /usr/local -xzvf go1.5.1.linux-amd64.tar.gz
+RUN wget https://storage.googleapis.com/golang/go1.12.7.linux-amd64.tar.gz
+RUN tar -C /usr/local -xzvf go1.12.7.linux-amd64.tar.gz
 ENV PATH $PATH:/usr/local/go/bin
 WORKDIR /opt
 RUN git clone https://go.googlesource.com/go
@@ -38,4 +38,5 @@ RUN mkdir -p /root/go
 ENV GOPATH /root/go
 WORKDIR /root/go
 
-
+# install golang packages
+RUN go get github.com/gin-gonic/gin

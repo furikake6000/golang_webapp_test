@@ -2,9 +2,10 @@ version: '2'
 services:
   golang:
     build: golang
-    command: go run src/main.go
+    command: go run main.go
+    working_dir: /root/go/app
     volumes:
-      - ./src:/root/go/src
+      - ./app:/root/go/app
     ports:
       - "8080:8080"
     tty: true
