@@ -10,3 +10,7 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+
+# secret files (cannot share on Github)
+app/secret/master.key
+app/secret/credentials.json
