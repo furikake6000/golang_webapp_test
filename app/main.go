@@ -4,6 +4,7 @@ import (
   "github.com/gin-gonic/gin"
   "github.com/jinzhu/gorm"
   _ "github.com/go-sql-driver/mysql"
+  "./secret"
 )
 
 type User struct {
@@ -27,7 +28,10 @@ func main() {
   router.LoadHTMLGlob("templates/*.html")
 
   router.GET("/", func(cont *gin.Context) {
-    cont.HTML(200, "index.html", gin.H{})
+    cont.HTML(200, "index.html", gin.H{
+      "tw_key": secret.Credentials["twitter_key"],
+      "tw_secret": secret.Credentials["twitter_secret"],
+    })
   })
   
   db.AutoMigrate(&User{})
