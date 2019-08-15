@@ -42,3 +42,5 @@ WORKDIR /root/go
 RUN go get github.com/gin-gonic/gin
 RUN go get github.com/jinzhu/gorm
 RUN go get github.com/go-sql-driver/mysql
+RUN go get github.com/gin-gonic/contrib/sessions
+RUN go get github.com/gomodule/oauth1/oauth

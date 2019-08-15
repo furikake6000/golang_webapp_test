@@ -1,42 +1,51 @@
 package main
 
 import (
-  "github.com/gin-gonic/gin"
-  "github.com/jinzhu/gorm"
-  _ "github.com/go-sql-driver/mysql"
-  "./secret"
+	"github.com/gin-gonic/contrib/sessions"
+	"github.com/gin-gonic/gin"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/jinzhu/gorm"
+
+	"./secret"
 )
 
 type User struct {
-  gorm.Model
-  Name string
-  Age int
+	gorm.Model
+	Name string
+	Age  int
 }
 
 func main() {
-  router := gin.Default()
-  var db *gorm.DB
-  for {
-    var err error
-    db, err = gorm.Open("mysql", "root:mysql@tcp(db)/golang_webapp")
+	router := gin.Default()
+	var db *gorm.DB
+	for {
+		var err error
+		db, err = gorm.Open("mysql", "root:mysql@tcp(db)/golang_webapp")
 
-    // 接続成功するまでポーリング
-    if err == nil {
-      break
-    }
-  }
-  router.LoadHTMLGlob("templates/*.html")
+		// 接続成功するまでポーリング
+		if err == nil {
+			break
+		}
+	}
+	router.LoadHTMLGlob("templates/*.html")
 
-  router.GET("/", func(cont *gin.Context) {
-    cont.HTML(200, "index.html", gin.H{
-      "tw_key": secret.Credentials["twitter_key"],
-      "tw_secret": secret.Credentials["twitter_secret"],
-    })
-  })
-  
-  db.AutoMigrate(&User{})
+	// Settings for cookie
+	store := sessions.NewCookieStore([]byte("tmp_secret_key"))
+	router.Use(sessions.Sessions("GolangWebappTest", store))
 
-  router.Run(":8080")
+	db.AutoMigrate(&User{})
 
-  defer db.Close()
+	router.GET("/", func(cont *gin.Context) {
+		cont.HTML(200, "index.html", gin.H{
+			"tw_key":    secret.Credentials["twitter_key"],
+			"tw_secret": secret.Credentials["twitter_secret"],
+		})
+	})
+
+	// Login with Twitter
+	router.GET("/auth/twitter", LoginByTwitter)
+
+	router.Run(":8080")
+
+	defer db.Close()
 }
