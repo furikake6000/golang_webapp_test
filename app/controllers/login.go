@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"../db"
+	"../models"
 	"../twitter"
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -64,10 +66,6 @@ func TwitterCallback(c *gin.Context) {
 		return
 	}
 
-	// AccessTokenをcookieに保存
-	session.Set("access_token", accessToken.Token)
-	session.Set("access_token_secret", accessToken.Secret)
-
 	response, err := client.Get(nil, accessToken, twitter.AccountURL, nil)
 	if err != nil {
 		panic(err)
@@ -82,15 +80,37 @@ func TwitterCallback(c *gin.Context) {
 		panic("400 error!")
 	}
 
-	var user twitter.Account
+	// account情報を取得し場合によってはUserを作成
+	var accountInfo twitter.Account
 
-	err = json.NewDecoder(response.Body).Decode(&user)
+	err = json.NewDecoder(response.Body).Decode(&accountInfo)
 	if err != nil {
 		panic(err)
 	}
 
+	var user models.User
+
+	db := db.GetDB()
+	db.Where(models.User{TwitterId: accountInfo.Id}).First(&user)
+
+	// 新規作成ならCREATE
+	if db.NewRecord(user) {
+		user = models.User{
+			TwitterId:  accountInfo.Id,
+			ScreenName: accountInfo.ScreenName,
+			ImageURL:   accountInfo.ImageURL,
+		}
+		db.Create(&user)
+	}
+
+	// AccessTokenとTwitter Uid(cookieログイン用)をcookieに保存
+	session.Set("access_token", accessToken.Token)
+	session.Set("access_token_secret", accessToken.Secret)
+	session.Set("twitter_uid", accountInfo.Id)
+
 	c.HTML(200, "login_success.html", gin.H{
-		"id":          user.Id,
+		"id":          user.ID,
+		"tw_id":       user.TwitterId,
 		"screen_name": user.ScreenName,
 		"image_url":   user.ImageURL,
 	})
