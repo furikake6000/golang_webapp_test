@@ -7,7 +7,7 @@ var db *gorm.DB
 func init() {
 	for {
 		var err error
-		db, err = gorm.Open("mysql", "root:mysql@tcp(db)/golang_webapp")
+		db, err = gorm.Open("mysql", "root:mysql@tcp(db)/golang_webapp?parseTime=true")
 
 		// 接続成功するまでポーリング
 		if err == nil {
