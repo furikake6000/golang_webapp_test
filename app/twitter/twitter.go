@@ -12,6 +12,12 @@ const (
 	AccountURL       = "https://api.twitter.com/1.1/account/verify_credentials.json"
 )
 
+type Account struct {
+	Id         string `json:"id_str"`
+	ScreenName string `json:"screen_name"`
+	ImageURL   string `json:"profile_image_url_https"`
+}
+
 func Client() *oauth.Client {
 	newClient := &oauth.Client{
 		TemporaryCredentialRequestURI: RefreshTokenURL,

@@ -44,6 +44,7 @@ func main() {
 
 	// Login with Twitter
 	router.GET("/auth/twitter", LoginByTwitter)
+	router.GET("/auth/twitter/callback", TwitterCallback)
 
 	router.Run(":8080")
 
