@@ -6,14 +6,10 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 
+	"./controllers"
+	"./models"
 	"./secret"
 )
-
-type User struct {
-	gorm.Model
-	Name string
-	Age  int
-}
 
 func main() {
 	router := gin.Default()
@@ -33,7 +29,7 @@ func main() {
 	store := sessions.NewCookieStore([]byte("tmp_secret_key"))
 	router.Use(sessions.Sessions("GolangWebappTest", store))
 
-	db.AutoMigrate(&User{})
+	db.AutoMigrate(&models.User{})
 
 	router.GET("/", func(cont *gin.Context) {
 		cont.HTML(200, "index.html", gin.H{
@@ -43,8 +39,8 @@ func main() {
 	})
 
 	// Login with Twitter
-	router.GET("/auth/twitter", LoginByTwitter)
-	router.GET("/auth/twitter/callback", TwitterCallback)
+	router.GET("/auth/twitter", controllers.LoginByTwitter)
+	router.GET("/auth/twitter/callback", controllers.TwitterCallback)
 
 	router.Run(":8080")
 

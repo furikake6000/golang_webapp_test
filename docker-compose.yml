@@ -2,7 +2,7 @@ version: '2'
 services:
   golang:
     build: golang
-    command: go run main.go login.go
+    command: go run main.go
     working_dir: /root/go/app
     volumes:
       - ./app:/root/go/app

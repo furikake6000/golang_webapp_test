@@ -1,10 +1,10 @@
-package main
+package controllers
 
 import (
 	"encoding/json"
 	"net/http"
 
-	"./twitter"
+	"../twitter"
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/gomodule/oauth1/oauth"
