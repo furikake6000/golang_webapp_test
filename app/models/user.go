@@ -6,8 +6,8 @@ import (
 )
 
 type User struct {
-	gorm.Model `gorm:"unique;not null"`
-	TwitterId  string
+	gorm.Model
+	TwitterId  string `gorm:"unique;not null"`
 	ScreenName string
 	ImageURL   string
 }
