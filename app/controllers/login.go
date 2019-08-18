@@ -107,6 +107,7 @@ func TwitterCallback(c *gin.Context) {
 	session.Set("access_token", accessToken.Token)
 	session.Set("access_token_secret", accessToken.Secret)
 	session.Set("twitter_uid", accountInfo.Id)
+	session.Save()
 
 	c.HTML(200, "login_success.html", gin.H{
 		"id":          user.ID,

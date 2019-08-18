@@ -6,7 +6,6 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 
 	"./controllers"
-	"./secret"
 )
 
 func main() {
@@ -19,12 +18,7 @@ func main() {
 	store := sessions.NewCookieStore([]byte("tmp_secret_key"))
 	router.Use(sessions.Sessions("GolangWebappTest", store))
 
-	router.GET("/", func(c *gin.Context) {
-		c.HTML(200, "index.html", gin.H{
-			"tw_key":    secret.Credentials["twitter_key"],
-			"tw_secret": secret.Credentials["twitter_secret"],
-		})
-	})
+	router.GET("/", controllers.Index)
 
 	// Login with Twitter
 	router.GET("/auth/twitter", controllers.LoginByTwitter)
