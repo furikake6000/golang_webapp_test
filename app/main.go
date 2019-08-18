@@ -21,8 +21,8 @@ func main() {
 	// Root
 	router.GET("/", controllers.Index)
 
-	// Trends
-	router.GET("/trend", controllers.ShowTrend)
+	// Keyword
+	router.GET("/keyword/:keyword", controllers.ShowKeyword)
 
 	// Login with Twitter
 	router.GET("/auth/twitter", controllers.LoginByTwitter)

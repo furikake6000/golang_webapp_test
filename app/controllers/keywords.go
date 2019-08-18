@@ -2,20 +2,24 @@ package controllers
 
 import (
 	"context"
-	"fmt"
+	"log"
+	"my/models"
+	"reflect"
 
 	"github.com/gin-gonic/gin"
 	"github.com/groovili/gogtrends"
 )
 
-func ShowTrend(c *gin.Context) {
+func ShowKeyword(c *gin.Context) {
+	user := models.CurrentUser(c)
+
 	ctx := context.Background()
 	explore, err := gogtrends.Explore(ctx,
 		&gogtrends.ExploreRequest{
 			ComparisonItems: []*gogtrends.ComparisonItem{
 				{
-					Keyword: "Go",
-					Geo:     "US",
+					Keyword: c.Param("keyword"),
+					Geo:     "JP",
 					Time:    "today+12-m",
 				},
 			},
@@ -29,5 +33,21 @@ func ShowTrend(c *gin.Context) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(overTime)
+
+	c.HTML(200, "keywords.html", gin.H{
+		"keyword":  c.Param("keyword"),
+		"user":     user,
+		"timeline": overTime,
+	})
+}
+func printItems(items interface{}) {
+	ref := reflect.ValueOf(items)
+
+	if ref.Kind() != reflect.Slice {
+		log.Fatalf("Failed to print %s. It's not a slice type.", ref.Kind())
+	}
+
+	for i := 0; i < ref.Len(); i++ {
+		log.Println(ref.Index(i).Interface())
+	}
 }
