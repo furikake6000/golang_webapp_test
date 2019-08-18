@@ -14,3 +14,6 @@
 # secret files (cannot share on Github)
 app/secret/master.key
 app/secret/credentials.json
+
+# node module files
+app/bulma-start-0.0.3/node_modules

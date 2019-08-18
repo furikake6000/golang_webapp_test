@@ -11,6 +11,8 @@ import (
 
 func main() {
 	router := gin.Default()
+	router.Static("/assets/css", "./assets/css")
+	router.Static("/assets/javascripts", "./assets/javascripts")
 	router.LoadHTMLGlob("templates/*.html")
 
 	// Settings for cookie
