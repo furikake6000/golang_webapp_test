@@ -17,8 +17,8 @@ func main() {
 	store := sessions.NewCookieStore([]byte("tmp_secret_key"))
 	router.Use(sessions.Sessions("GolangWebappTest", store))
 
-	router.GET("/", func(cont *gin.Context) {
-		cont.HTML(200, "index.html", gin.H{
+	router.GET("/", func(c *gin.Context) {
+		c.HTML(200, "index.html", gin.H{
 			"tw_key":    secret.Credentials["twitter_key"],
 			"tw_secret": secret.Credentials["twitter_secret"],
 		})
