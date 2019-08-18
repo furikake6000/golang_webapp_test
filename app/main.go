@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 
-	"./controllers"
+	"my/controllers"
 )
 
 func main() {
@@ -18,7 +18,11 @@ func main() {
 	store := sessions.NewCookieStore([]byte("tmp_secret_key"))
 	router.Use(sessions.Sessions("GolangWebappTest", store))
 
+	// Root
 	router.GET("/", controllers.Index)
+
+	// Trends
+	router.GET("/trend", controllers.ShowTrend)
 
 	// Login with Twitter
 	router.GET("/auth/twitter", controllers.LoginByTwitter)

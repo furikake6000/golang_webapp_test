@@ -1,7 +1,8 @@
 package models
 
 import (
-	"../db"
+	"my/db"
+
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"

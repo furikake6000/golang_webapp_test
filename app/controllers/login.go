@@ -4,9 +4,10 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"../db"
-	"../models"
-	"../twitter"
+	"my/db"
+	"my/models"
+	"my/twitter"
+
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/gomodule/oauth1/oauth"

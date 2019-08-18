@@ -1,7 +1,8 @@
 package twitter
 
 import (
-	"../secret"
+	"my/secret"
+
 	"github.com/gomodule/oauth1/oauth"
 )
 
