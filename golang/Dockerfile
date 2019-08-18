@@ -37,11 +37,3 @@ ENV PATH $PATH:/opt/go/bin
 RUN mkdir -p /root/go
 ENV GOPATH /root/go
 WORKDIR /root/go
-
-# install golang packages
-RUN go get github.com/gin-gonic/gin
-RUN go get github.com/jinzhu/gorm
-RUN go get github.com/go-sql-driver/mysql
-RUN go get github.com/gin-gonic/contrib/sessions
-RUN go get github.com/gomodule/oauth1/oauth
-RUN go get github.com/groovili/gogtrends
